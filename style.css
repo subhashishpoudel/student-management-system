@@ -1,0 +1,3 @@
+/* AdminLTE provides the look. Add only your own changes here. */
+td .btn + .btn { margin-left: 4px; }
+td:last-child { white-space: nowrap; }

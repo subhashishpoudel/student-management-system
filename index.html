@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<!-- ========================================================
+     Cell 1: Head
+     Icons, the AdminLTE template (it includes Bootstrap), then
+     our own style.css. "defer" runs the scripts after the
+     cells below exist.
+     ======================================================== -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.10.2/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@4.10.2/dist/js/adminlte.min.js" defer></script>
+  <script src="dist/main.js" defer></script>
+</head>
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+<div class="app-wrapper">
+
+  <!-- ======================================================
+       Cell 2: Top bar
+       The button shows or hides the sidebar (AdminLTE).
+       ====================================================== -->
+  <nav class="app-header navbar navbar-expand bg-body">
+    <div class="container-fluid">
+      <button class="btn nav-link" type="button" data-lte-toggle="sidebar" aria-label="Show or hide menu">
+        <i class="bi bi-list fs-4"></i>
+      </button>
+      <span class="navbar-text ms-auto">Student records</span>
+    </div>
+  </nav>
+
+  <!-- ======================================================
+       Cell 2b: Sidebar menu
+       Each link's #name matches a section id below.
+       ====================================================== -->
+  <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-brand">
+      <a href="#home" class="brand-link">
+        <i class="bi bi-mortarboard-fill fs-4 me-2"></i>
+        <span class="brand-text">Student Management</span>
+      </a>
+    </div>
+    <div class="sidebar-wrapper">
+      <nav class="mt-2">
+        <ul id="navbar" class="nav sidebar-menu flex-column">
+          <li class="nav-item"><a href="#home" class="nav-link"><i class="nav-icon bi bi-speedometer2"></i><p>Home</p></a></li>
+          <li class="nav-item"><a href="#students" class="nav-link"><i class="nav-icon bi bi-people"></i><p>Students</p></a></li>
+          <li class="nav-item"><a href="#about" class="nav-link"><i class="nav-icon bi bi-info-circle"></i><p>About</p></a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link"><i class="nav-icon bi bi-envelope"></i><p>Contact</p></a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <div class="app-content py-3">
+      <div class="container-fluid">
+
+        <!-- ================================================
+             Cell 3: Home page (dashboard cards)
+             main.ts Cell 6b fills the three numbers.
+             ================================================ -->
+        <section id="home">
+          <h1 class="h3 mb-3">Dashboard</h1>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="small-box text-bg-primary">
+                <div class="inner"><h3 id="stat-total">-</h3><p>Total students</p></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="small-box text-bg-success">
+                <div class="inner"><h3 id="stat-average">-</h3><p>Average marks</p></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="small-box text-bg-warning">
+                <div class="inner"><h3 id="stat-highest">-</h3><p>Highest marks</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="small-box text-bg-info">
+                <div class="inner"><h3 id="stat-passed">-</h3><p>Passed (40 or more)</p></div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="small-box text-bg-danger">
+                <div class="inner"><h3 id="stat-failed">-</h3><p>Failed (below 40)</p></div>
+              </div>
+            </div>
+          </div>
+          <p id="stats-status" class="text-danger" role="status"></p>
+
+          <!-- ==============================================
+               Cell 3b: Marks chart
+               main.ts Cell 6c draws one bar per range.
+               ============================================== -->
+          <div class="card mb-3">
+            <div class="card-header"><h2 class="card-title">Marks chart</h2></div>
+            <div class="card-body" id="marks-chart"></div>
+          </div>
+
+          <!-- ==============================================
+               Cell 3c: Top and recent students
+               main.ts Cell 6d fills both tables.
+               ============================================== -->
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-header"><h2 class="card-title">Top 5 students</h2></div>
+                <div class="card-body table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead><tr><th>ID</th><th>Name</th><th>Marks</th></tr></thead>
+                    <tbody id="top-rows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-header"><h2 class="card-title">Recently added</h2></div>
+                <div class="card-body table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead><tr><th>ID</th><th>Name</th><th>Marks</th></tr></thead>
+                    <tbody id="recent-rows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="#students" class="btn btn-primary">Manage students</a>
+        </section>
+
+        <section id="students" hidden>
+          <h1 class="h3 mb-3">Students</h1>
+
+          <!-- ==============================================
+               Cell 4: Add / edit form
+               One form for both. main.ts changes the heading.
+               ============================================== -->
+          <div class="card mb-3">
+            <div class="card-header"><h2 id="form-title" class="card-title">Add a student</h2></div>
+            <div class="card-body">
+              <form id="student-form" class="row g-3">
+                <div class="col-md-8">
+                  <label for="student-name" class="form-label">Name</label>
+                  <input id="student-name" class="form-control" type="text" maxlength="100" required>
+                </div>
+                <div class="col-md-4">
+                  <label for="student-marks" class="form-label">Marks (0 to 100)</label>
+                  <input id="student-marks" class="form-control" type="number" min="0" max="100" step="1" required>
+                </div>
+                <div class="col-12">
+                  <button id="student-save" class="btn btn-primary" type="submit">Add student</button>
+                  <button id="student-cancel" class="btn btn-secondary" type="button" hidden>Cancel</button>
+                </div>
+              </form>
+              <p id="student-status" class="mt-2 mb-0" role="status"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <!-- ============================================
+                 Cell 5: Search and sort
+                 ============================================ -->
+            <div class="card-header">
+              <div class="row g-2">
+                <div class="col-md-8">
+                  <input id="search" class="form-control" type="search" placeholder="Search by name" aria-label="Search by name">
+                </div>
+                <div class="col-md-4">
+                  <select id="sort" class="form-select" aria-label="Sort students">
+                    <option value="id:asc">Oldest first</option>
+                    <option value="id:desc">Newest first</option>
+                    <option value="name:asc">Name A to Z</option>
+                    <option value="marks:desc">Highest marks</option>
+                    <option value="marks:asc">Lowest marks</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================
+                 Cell 6: Student table
+                 main.ts fills the empty body and the summary.
+                 ============================================ -->
+            <div class="card-body">
+              <p id="summary"></p>
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                  <thead><tr><th>ID</th><th>Name</th><th>Marks</th><th>Actions</th></tr></thead>
+                  <tbody id="student-rows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================
+             Cell 7: About page
+             ================================================ -->
+        <section id="about" hidden>
+          <h1 class="h3 mb-3">About</h1>
+
+          <div class="card mb-3">
+            <div class="card-header"><h2 class="card-title">The project</h2></div>
+            <div class="card-body">A student management system to add, edit, search and track students' marks.</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header"><h2 class="card-title">Features</h2></div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Dashboard with totals and a marks chart</li>
+                  <li class="list-group-item">Add, edit and delete students</li>
+                  <li class="list-group-item">Search and sort</li>
+                  <li class="list-group-item">Contact form</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header"><h2 class="card-title">Built with</h2></div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">TypeScript</li>
+                  <li class="list-group-item">Express</li>
+                  <li class="list-group-item">PostgreSQL</li>
+                  <li class="list-group-item">AdminLTE</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">Developer</h2></div>
+            <div class="card-body">
+              <h3 class="h5">Subhashish Poudel</h3>
+              <p>Curious learner who enjoys building small web apps and finding out why things break.</p>
+              <div class="mb-3">
+                <span class="badge text-bg-primary">TypeScript</span>
+                <span class="badge text-bg-success">Express</span>
+                <span class="badge text-bg-info">PostgreSQL</span>
+              </div>
+              <p class="mb-1"><i class="bi bi-lightbulb me-2"></i>Currently learning: databases and backups</p>
+              <p class="mb-1"><i class="bi bi-cup-hot me-2"></i>Fuelled by: tea and curiosity</p>
+              <p class="mb-0"><i class="bi bi-chat-quote me-2"></i>Motto: save, test, repeat.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================
+             Cell 8: Contact page
+             ================================================ -->
+        <section id="contact" hidden>
+          <h1 class="h3 mb-3">Contact</h1>
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="card mb-3">
+                <div class="card-header"><h2 class="card-title">Send a message</h2></div>
+                <div class="card-body">
+                  <form id="contact-form" class="vstack gap-3">
+                    <div>
+                      <label for="contact-name" class="form-label">Your name</label>
+                      <input id="contact-name" class="form-control" type="text">
+                    </div>
+                    <div>
+                      <label for="contact-message" class="form-label">Message</label>
+                      <textarea id="contact-message" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div><button class="btn btn-primary" type="submit"><i class="bi bi-send me-1"></i>Send</button></div>
+                  </form>
+                  <p id="form-status" role="status"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card mb-3">
+                <div class="card-header"><h2 class="card-title">Contact details</h2></div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><i class="bi bi-envelope me-2"></i>subhashish@example.com</li>
+                  <li class="list-group-item"><i class="bi bi-geo-alt me-2"></i>Kathmandu, Nepal</li>
+                  <li class="list-group-item"><i class="bi bi-clock me-2"></i>Sunday to Friday, 10:00 AM to 5:00 PM</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

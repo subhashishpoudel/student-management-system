@@ -1,0 +1,14 @@
+{
+  "name": "typescript-practice",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"tsc --watch --preserveWatchOutput\" \"live-server --host=127.0.0.1 --port=8080\"",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "concurrently": "^9",
+    "live-server": "^1.2.2",
+    "typescript": "^5"
+  }
+}
